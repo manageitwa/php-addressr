@@ -1,0 +1,7 @@
+.devcontainer/* export-ignore
+.github/* export-ignore
+.vscode/* export-ignore
+tests/* export-ignore
+workbench/* export-ignore
+phpunit.xml export-ignore
+testbench.yaml export-ignore
