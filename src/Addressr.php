@@ -10,4 +10,11 @@ class Addressr
     {
         $this->client = $client;
     }
+
+    public function search(string $query): array
+    {
+        $results = $this->client->query($query);
+
+        return $results;
+    }
 }

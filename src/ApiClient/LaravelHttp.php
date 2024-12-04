@@ -29,10 +29,12 @@ class LaravelHttp implements ApiClient
         ]);
 
         if (!$response->ok()) {
+            /** @var string */
             $message = $response->json('message', 'An error occurred while querying Addressr.');
-            throw new QueryException($message);
+            throw new QueryException((string) $message);
         }
 
+        /** @var array<int, mixed> */
         $data = $response->json();
 
         if (!count($data)) {
@@ -42,25 +44,27 @@ class LaravelHttp implements ApiClient
         return $data;
     }
 
-    public function address(string $gaId): array
+    public function address(string $pId): array
     {
         $this->checkConnection();
 
-        $response = Http::get($this->uri("addresses/{$gaId}"));
+        $response = Http::get($this->uri("addresses/{$pId}"));
 
         if ($response->getStatusCode() === 404) {
             throw new NotFoundException('No address found with the given ID.');
         }
 
         if (!$response->ok()) {
+            /** @var string */
             $message = $response->json('message', 'An error occurred while fetching the address.');
-            throw new AddressException($message);
+            throw new AddressException((string) $message);
         }
 
+        /** @var array<string, mixed> */
         return $response->json();
     }
 
-    protected function checkConnection()
+    protected function checkConnection(): void
     {
         if (empty($this->endpoint)) {
             throw new ConnectionException('Addressr endpoint is not set. Please set "services.addressr.endpoint" in your "services.php" config file.');

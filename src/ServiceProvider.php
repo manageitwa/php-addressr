@@ -11,12 +11,18 @@ class ServiceProvider extends BaseServiceProvider implements DeferrableProvider
     public function register(): void
     {
         $this->app->singleton(Addressr::class, function () {
+            /** @var string */
+            $endpoint = config('services.addressr.endpoint', '');
+
             return new Addressr(
-                new LaravelHttp(config('services.addressr.endpoint', ''))
+                new LaravelHttp((string) $endpoint)
             );
         });
     }
 
+    /**
+     * @return array<int, class-string>
+     */
     public function provides()
     {
         return [
